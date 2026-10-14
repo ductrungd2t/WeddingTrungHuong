@@ -1,5 +1,10 @@
 [
-  "01 - Lời cầu hôn.mp4",
-  "02 - Chụp ảnh cưới",
-  "03 - Trend cưới chúng mình"
+  {
+    "title": "Lời cầu hôn",
+    "youtube": "https://youtu.be/35-55weiIMc"
+  },
+  {
+    "title": "Chụp ảnh cưới",
+    "youtube": "https://youtube.com/shorts/HwxpFG9NOcQ?feature=share"
+  }
 ]
