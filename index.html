@@ -892,7 +892,7 @@ body.locked{overflow:hidden;}
   <div class="memory-player-view" id="memoryPlayerView">
    <button class="memory-back" id="memoryBack" type="button">← Quay lại danh sách</button>
    <h3 class="memory-player-title" id="memoryPlayerTitle">Lời cầu hôn</h3>
-   <video id="memoryVideo" controls playsinline preload="none" poster="assets/videos/01%20-%20L%E1%BB%9Di%20c%E1%BA%A7u%20h%C3%B4n.jpg"></video>
+   <div id="memoryYoutubeHost" class="memory-youtube-host" aria-label="Trình phát video YouTube"></div>
   </div>
  </div>
 </div>
@@ -1313,40 +1313,25 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
 </script>
 
 
+<style id="memory-youtube-style">.memory-youtube-host{width:100%;aspect-ratio:16/9;background:#180c0e;border-radius:14px;overflow:hidden}.memory-youtube-host iframe{width:100%;height:100%;border:0;display:block}@media(max-width:700px){.memory-youtube-host{border-radius:9px}}</style>
 <script id="memory-video-script">
 (()=>{
- const openBtn=document.getElementById('openMemoryVideo'), modal=document.getElementById('memoryVideoModal'), closeBtn=document.getElementById('closeMemoryVideo');
- const list=document.getElementById('memoryListView'), player=document.getElementById('memoryPlayerView'), video=document.getElementById('memoryVideo'), title=document.getElementById('memoryPlayerTitle'), back=document.getElementById('memoryBack');
- if(!openBtn||!modal||!video) return;
- const music=document.getElementById('music');
- function pauseMusic(){if(music&&!music.paused){video.dataset.resumeMusic='1';music.pause();}}
- function resumeMusic(){if(video.dataset.resumeMusic==='1'&&music){music.play().catch(()=>{});delete video.dataset.resumeMusic;}}
- function showList(){video.pause();video.removeAttribute('src');video.load();player.classList.remove('active');list.classList.remove('hidden');resumeMusic();}
- function openModal(){list.classList.remove('hidden');player.classList.remove('active');modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
- function playItem(btn){const src=btn.dataset.video;if(!src)return;list.classList.add('hidden');player.classList.add('active');title.textContent=btn.dataset.title||'Kỷ niệm';pauseMusic();video.poster=btn.dataset.poster||"assets/memory-video-cover.jpg";video.src=src;video.load();video.play().catch(()=>{});}
- function closeModal(){video.pause();video.removeAttribute('src');video.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';list.classList.remove('hidden');player.classList.remove('active');resumeMusic();}
- openBtn.addEventListener('click',openModal);
- const grid=document.getElementById('memoryVideoGrid');
- function titleFromFile(file){
-   let name=String(file||'').split('/').pop().replace(/\.[^.]+$/,'');
-   name=name.replace(/^\s*\d+\s*[-_.–—]+\s*/,'').replace(/[_]+/g,' ').replace(/\s+/g,' ').trim();
-   return name||'Kỷ niệm';
- }
- function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
- async function loadVideoList(){
-   if(!grid)return;
-   try{
-     const res=await fetch('assets/videos/videos.json',{cache:'no-cache'});
-     if(!res.ok)throw new Error('HTTP '+res.status);
-     const files=await res.json();
-     if(!Array.isArray(files)||!files.length){grid.innerHTML='<div class="memory-video-empty">Chưa có video kỷ niệm.</div>';return;}
-     grid.innerHTML=files.map((file,i)=>{const t=titleFromFile(file);const stem=String(file).replace(/\.[^.]+$/,'');const poster="assets/videos/"+encodeURIComponent(stem).replace(/%2F/gi,'/')+".jpg";return `<button class="memory-video-item" type="button" data-video="assets/videos/${encodeURIComponent(file).replace(/%2F/gi,'/')}" data-poster="${esc(poster)}" data-title="${esc(t)}"><div class="memory-video-thumb"><img src="${esc(poster)}" onerror="this.onerror=null;this.src='assets/memory-video-cover.jpg'" alt="${esc(t)}" loading="lazy" decoding="async"><span><svg viewBox="0 0 24 24" width="23" height="23" focusable="false" aria-hidden="true"><path d="M8 5.5L19 12 8 18.5Z" fill="#65151d"/></svg></span></div><div class="memory-video-info"><b>${esc(t)}</b><small>Nhấn để xem video</small></div></button>`}).join('');
-   }catch(e){grid.innerHTML='<div class="memory-video-empty">Không tải được danh sách video.</div>';}
- }
- grid&&grid.addEventListener('click',e=>{const btn=e.target.closest('.memory-video-item');if(btn)playItem(btn);});
- loadVideoList();
- back?.addEventListener('click',showList);closeBtn?.addEventListener('click',closeModal);
- modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});
+ const openBtn=document.getElementById('openMemoryVideo'),modal=document.getElementById('memoryVideoModal'),closeBtn=document.getElementById('closeMemoryVideo');
+ const list=document.getElementById('memoryListView'),player=document.getElementById('memoryPlayerView'),host=document.getElementById('memoryYoutubeHost'),title=document.getElementById('memoryPlayerTitle'),back=document.getElementById('memoryBack'),grid=document.getElementById('memoryVideoGrid');
+ if(!openBtn||!modal||!host||!grid)return;
+ const music=document.getElementById('music');let resumeAfter=false;
+ const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const titleFromFile=file=>String(file||'').split('/').pop().replace(/\.[^.]+$/,'').replace(/^\s*\d+\s*[-_.–—]+\s*/,'').replace(/_/g,' ').trim()||'Kỷ niệm';
+ function youtubeId(url){try{const u=new URL(url);const h=u.hostname.toLowerCase();if(h==='youtu.be'||h==='www.youtu.be')return u.pathname.split('/')[1]||'';if(h==='youtube.com'||h==='www.youtube.com'||h==='m.youtube.com'||h==='youtube-nocookie.com'||h==='www.youtube-nocookie.com'){if(u.pathname==='/watch')return u.searchParams.get('v')||'';const m=u.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/);return m?m[1]:'';}}catch(e){}return '';}
+ function stopPlayer(){host.replaceChildren();}
+ function pauseMusic(){resumeAfter=!!(music&&!music.paused);if(resumeAfter)music.pause();}
+ function resumeMusic(){if(resumeAfter&&music)music.play().catch(()=>{});resumeAfter=false;}
+ function showList(){stopPlayer();player.classList.remove('active');list.classList.remove('hidden');resumeMusic();}
+ function openModal(){showList();modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+ function closeModal(){showList();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+ function playItem(btn){const id=youtubeId(btn.dataset.youtube||'');if(!/^[A-Za-z0-9_-]{11}$/.test(id))return;list.classList.add('hidden');player.classList.add('active');title.textContent=btn.dataset.title||'Kỷ niệm';pauseMusic();const iframe=document.createElement('iframe');iframe.title=title.textContent;iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';iframe.allowFullscreen=true;iframe.referrerPolicy='strict-origin-when-cross-origin';host.replaceChildren(iframe);}
+ async function loadVideoList(){try{const res=await fetch('assets/videos/videos.json',{cache:'no-cache'});if(!res.ok)throw Error('HTTP '+res.status);const items=await res.json();if(!Array.isArray(items))throw Error('JSON must be array');const valid=items.filter(item=>item&&typeof item==='object'&&/^[A-Za-z0-9_-]{11}$/.test(youtubeId(item.youtube||'')));if(!valid.length){grid.innerHTML='<div class="memory-video-empty">Chưa có liên kết YouTube hợp lệ trong videos.json.</div>';return;}grid.innerHTML=valid.map((item,i)=>{const t=item.title||'Kỷ niệm '+(i+1);const id=youtubeId(item.youtube);const poster='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';return `<button class="memory-video-item" type="button" data-youtube="${esc(item.youtube)}" data-title="${esc(t)}"><div class="memory-video-thumb"><img src="${esc(poster)}" alt="${esc(t)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/memories-cover.jpg'"><span><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true"><path d="M8 5.5L19 12 8 18.5Z" fill="#65151d"/></svg></span></div><div class="memory-video-info"><b>${esc(t)}</b><small>Nhấn để xem video</small></div></button>`;}).join('');}catch(e){grid.innerHTML='<div class="memory-video-empty">Không tải được danh sách video. Hãy kiểm tra videos.json.</div>';}}
+ grid.addEventListener('click',e=>{const btn=e.target.closest('.memory-video-item');if(btn)playItem(btn);});openBtn.addEventListener('click',openModal);back?.addEventListener('click',showList);closeBtn?.addEventListener('click',closeModal);modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});loadVideoList();
 })();
 </script>
 
