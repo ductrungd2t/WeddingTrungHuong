@@ -775,7 +775,7 @@ body.locked{overflow:hidden;}
   <h2 class="memory-video-title">Kỷ niệm của chúng mình</h2>
   <p class="memory-video-sub">Những khoảnh khắc đáng nhớ trên hành trình của Đức Trung &amp; Thu Hương.</p>
   <button class="memory-video-cover" id="openMemoryVideo" type="button" aria-label="Mở danh sách video kỷ niệm">
-   <img src="assets/memory-video-cover.jpg" alt="Kỷ niệm của Đức Trung và Thu Hương" loading="lazy" decoding="async">
+   <img src="assets/videos/01%20-%20L%E1%BB%9Di%20c%E1%BA%A7u%20h%C3%B4n.jpg" onerror="this.onerror=null;this.src='assets/memory-video-cover.jpg'" alt="Kỷ niệm của Đức Trung và Thu Hương" loading="lazy" decoding="async">
    <span class="memory-video-play" aria-hidden="true">▶</span>
    <span class="memory-video-label">XEM NHỮNG KỶ NIỆM</span>
   </button>
@@ -880,7 +880,7 @@ body.locked{overflow:hidden;}
   <div class="memory-player-view" id="memoryPlayerView">
    <button class="memory-back" id="memoryBack" type="button">← Quay lại danh sách</button>
    <h3 class="memory-player-title" id="memoryPlayerTitle">Lời cầu hôn</h3>
-   <video id="memoryVideo" controls playsinline preload="none" poster="assets/memory-video-cover.jpg"></video>
+   <video id="memoryVideo" controls playsinline preload="none" poster="assets/videos/01%20-%20L%E1%BB%9Di%20c%E1%BA%A7u%20h%C3%B4n.jpg"></video>
   </div>
  </div>
 </div>
@@ -1311,7 +1311,7 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
  function resumeMusic(){if(video.dataset.resumeMusic==='1'&&music){music.play().catch(()=>{});delete video.dataset.resumeMusic;}}
  function showList(){video.pause();video.removeAttribute('src');video.load();player.classList.remove('active');list.classList.remove('hidden');resumeMusic();}
  function openModal(){list.classList.remove('hidden');player.classList.remove('active');modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
- function playItem(btn){const src=btn.dataset.video;if(!src)return;list.classList.add('hidden');player.classList.add('active');title.textContent=btn.dataset.title||'Kỷ niệm';pauseMusic();video.src=src;video.load();video.play().catch(()=>{});}
+ function playItem(btn){const src=btn.dataset.video;if(!src)return;list.classList.add('hidden');player.classList.add('active');title.textContent=btn.dataset.title||'Kỷ niệm';pauseMusic();video.poster=btn.dataset.poster||"assets/memory-video-cover.jpg";video.src=src;video.load();video.play().catch(()=>{});}
  function closeModal(){video.pause();video.removeAttribute('src');video.load();modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';list.classList.remove('hidden');player.classList.remove('active');resumeMusic();}
  openBtn.addEventListener('click',openModal);
  const grid=document.getElementById('memoryVideoGrid');
@@ -1328,7 +1328,7 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
      if(!res.ok)throw new Error('HTTP '+res.status);
      const files=await res.json();
      if(!Array.isArray(files)||!files.length){grid.innerHTML='<div class="memory-video-empty">Chưa có video kỷ niệm.</div>';return;}
-     grid.innerHTML=files.map((file,i)=>{const t=titleFromFile(file);return `<button class="memory-video-item" type="button" data-video="assets/videos/${encodeURIComponent(file).replace(/%2F/gi,'/')}" data-title="${esc(t)}"><div class="memory-video-thumb"><img src="assets/memory-video-cover.jpg" alt="${esc(t)}" loading="lazy" decoding="async"><span>▶</span></div><div class="memory-video-info"><b>${esc(t)}</b><small>Nhấn để xem video</small></div></button>`}).join('');
+     grid.innerHTML=files.map((file,i)=>{const t=titleFromFile(file);const stem=String(file).replace(/\.[^.]+$/,'');const poster="assets/videos/"+encodeURIComponent(stem).replace(/%2F/gi,'/')+".jpg";return `<button class="memory-video-item" type="button" data-video="assets/videos/${encodeURIComponent(file).replace(/%2F/gi,'/')}" data-poster="${esc(poster)}" data-title="${esc(t)}"><div class="memory-video-thumb"><img src="${esc(poster)}" onerror="this.onerror=null;this.src='assets/memory-video-cover.jpg'" alt="${esc(t)}" loading="lazy" decoding="async"><span>▶</span></div><div class="memory-video-info"><b>${esc(t)}</b><small>Nhấn để xem video</small></div></button>`}).join('');
    }catch(e){grid.innerHTML='<div class="memory-video-empty">Không tải được danh sách video.</div>';}
  }
  grid&&grid.addEventListener('click',e=>{const btn=e.target.closest('.memory-video-item');if(btn)playItem(btn);});
