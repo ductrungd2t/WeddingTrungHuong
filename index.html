@@ -1314,6 +1314,19 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
 
 
 <style id="memory-youtube-style">.memory-youtube-host{width:100%;aspect-ratio:16/9;background:#180c0e;border-radius:14px;overflow:hidden}.memory-youtube-host iframe{width:100%;height:100%;border:0;display:block}@media(max-width:700px){.memory-youtube-host{border-radius:9px}}</style>
+<style id="memory-mobile-fullscreen-style">
+@media(max-width:700px){
+ body.memory-mobile-fullscreen .memory-video-modal{padding:0!important;inset:0!important;background:#000!important;align-items:stretch!important;justify-content:stretch!important;z-index:2147483646!important}
+ body.memory-mobile-fullscreen .memory-video-dialog{width:100vw!important;height:100dvh!important;max-height:100dvh!important;max-width:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:#000!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important}
+ body.memory-mobile-fullscreen .memory-list-view{display:none!important}
+ body.memory-mobile-fullscreen .memory-player-view{display:flex!important;position:absolute!important;inset:0!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;background:#000!important}
+ body.memory-mobile-fullscreen .memory-youtube-host{width:100vw!important;height:100dvh!important;aspect-ratio:auto!important;border-radius:0!important;display:flex!important;align-items:center!important;justify-content:center!important;background:#000!important}
+ body.memory-mobile-fullscreen .memory-youtube-host iframe{width:100%!important;height:100%!important;border:0!important}
+ body.memory-mobile-fullscreen .memory-player-title{display:none!important}
+ body.memory-mobile-fullscreen .memory-video-close{position:fixed!important;top:max(12px,env(safe-area-inset-top))!important;right:max(12px,env(safe-area-inset-right))!important;z-index:2147483647!important;float:none!important}
+ body.memory-mobile-fullscreen .memory-back{position:fixed!important;top:max(15px,env(safe-area-inset-top))!important;left:max(12px,env(safe-area-inset-left))!important;z-index:2147483647!important;color:white!important;background:rgba(0,0,0,.6)!important;border-radius:20px!important;padding:8px 12px!important}
+}
+</style>
 <script id="memory-video-script">
 (()=>{
  const openBtn=document.getElementById('openMemoryVideo'),modal=document.getElementById('memoryVideoModal'),closeBtn=document.getElementById('closeMemoryVideo');
@@ -1323,7 +1336,7 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
  const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const titleFromFile=file=>String(file||'').split('/').pop().replace(/\.[^.]+$/,'').replace(/^\s*\d+\s*[-_.–—]+\s*/,'').replace(/_/g,' ').trim()||'Kỷ niệm';
  function youtubeId(url){try{const u=new URL(url);const h=u.hostname.toLowerCase();if(h==='youtu.be'||h==='www.youtu.be')return u.pathname.split('/')[1]||'';if(h==='youtube.com'||h==='www.youtube.com'||h==='m.youtube.com'||h==='youtube-nocookie.com'||h==='www.youtube-nocookie.com'){if(u.pathname==='/watch')return u.searchParams.get('v')||'';const m=u.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/);return m?m[1]:'';}}catch(e){}return '';}
- function stopPlayer(){host.replaceChildren();}
+ function stopPlayer(){host.replaceChildren();document.body.classList.remove('memory-mobile-fullscreen');}
  function pauseMusic(){resumeAfter=!!(music&&!music.paused);if(resumeAfter)music.pause();}
  function resumeMusic(){if(resumeAfter&&music)music.play().catch(()=>{});resumeAfter=false;}
  function showList(){stopPlayer();player.classList.remove('active');list.classList.remove('hidden');resumeMusic();}
@@ -1332,7 +1345,8 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
  function playItem(btn){const id=youtubeId(btn.dataset.youtube||'');if(!/^[A-Za-z0-9_-]{11}$/.test(id))return;list.classList.add('hidden');player.classList.add('active');title.textContent=btn.dataset.title||'Kỷ niệm';pauseMusic();const iframe=document.createElement('iframe');iframe.title=title.textContent;// Mobile browsers commonly block autoplay with sound. Start muted on touch/mobile
  // so the video begins immediately; viewers can unmute in the YouTube player.
  const mobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
- iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0&mute='+(mobile?'1':'0')+'&controls=1';
+ if(mobile)document.body.classList.add('memory-mobile-fullscreen');
+ iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0&fs=1&mute='+(mobile?'1':'0')+'&controls=1';
  iframe.loading='eager';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';iframe.allowFullscreen=true;iframe.referrerPolicy='strict-origin-when-cross-origin';host.replaceChildren(iframe);}
  async function loadVideoList(){try{const res=await fetch('assets/videos/videos.json',{cache:'no-cache'});if(!res.ok)throw Error('HTTP '+res.status);const items=await res.json();if(!Array.isArray(items))throw Error('JSON must be array');const valid=items.filter(item=>item&&typeof item==='object'&&/^[A-Za-z0-9_-]{11}$/.test(youtubeId(item.youtube||'')));if(!valid.length){grid.innerHTML='<div class="memory-video-empty">Chưa có liên kết YouTube hợp lệ trong videos.json.</div>';return;}grid.innerHTML=valid.map((item,i)=>{const t=item.title||'Kỷ niệm '+(i+1);const id=youtubeId(item.youtube);const poster='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';return `<button class="memory-video-item" type="button" data-youtube="${esc(item.youtube)}" data-title="${esc(t)}"><div class="memory-video-thumb"><img src="${esc(poster)}" alt="${esc(t)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/memories-cover.jpg'"><span><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true"><path d="M8 5.5L19 12 8 18.5Z" fill="#65151d"/></svg></span></div><div class="memory-video-info"><b>${esc(t)}</b><small>Nhấn để xem video</small></div></button>`;}).join('');}catch(e){grid.innerHTML='<div class="memory-video-empty">Không tải được danh sách video. Hãy kiểm tra videos.json.</div>';}}
  grid.addEventListener('click',e=>{const btn=e.target.closest('.memory-video-item');if(btn)playItem(btn);});openBtn.addEventListener('click',openModal);back?.addEventListener('click',showList);closeBtn?.addEventListener('click',closeModal);modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal();});loadVideoList();
