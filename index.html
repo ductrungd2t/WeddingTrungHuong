@@ -658,7 +658,7 @@ body:not(.locked) .site{visibility:visible;opacity:1;pointer-events:auto}
     cursor: zoom-in;
   }
   .album-stage .slide img:hover{
-    transform: scale(1.035);
+    transform: none;
     position: relative;
     z-index: 12;
     animation: weddingImageGlowBlink 1.55s ease-in-out infinite;
@@ -718,7 +718,8 @@ body.locked{overflow:hidden;}
 .env-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;}
 .album-stage{height:470px;min-height:470px;}
 .album-stage .slide{width:265px;height:400px;contain:layout paint;}
-.album-stage .slide img{display:block;width:100%;height:100%;object-fit:cover;}
+.album-stage .slide::before{content:"";position:absolute;inset:-24px;background-image:var(--album-image);background-size:cover;background-position:center;filter:blur(18px) brightness(.78);pointer-events:none}
+.album-stage .slide img{display:block;position:relative;width:100%;height:100%;object-fit:contain;object-position:center;}
 .map{min-height:330px;}
 @media(max-width:620px){
   .album-stage{height:420px;min-height:420px;}
@@ -1062,6 +1063,7 @@ const CONFIG = {
  const stage=$("#albumStage"), dots=$("#albumDots");
  CONFIG.gallery.forEach((file,i)=>{
    const s=document.createElement("div");s.className="slide";s.dataset.i=i;
+   s.style.setProperty('--album-image',`url("assets/gallery/${file.replace('.webp','-800.webp')}")`);
    s.innerHTML=`<img src="assets/gallery/${file.replace('.webp','-800.webp')}" data-full="assets/gallery/${file}" alt="Ảnh cưới ${i+1}" loading="lazy" decoding="async" fetchpriority="auto" width="530" height="800" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="ph" style="display:none">Ảnh ${i+1}<br>assets/gallery/${file}</div>`;
    s.onclick=()=>{current=i;renderAlbum()};stage.appendChild(s);
    const d=document.createElement("button");d.className="dot";d.onclick=()=>{current=i;renderAlbum()};dots.appendChild(d);
