@@ -898,6 +898,10 @@ body.locked{overflow:hidden;}
  <footer><div class="forever">Đức Trung & Thu Hương</div><div>29 · 11 · 2026</div><p style="font-size:10px;opacity:.65;letter-spacing:.16em">WE'RE GETTING MARRIED</p></footer>
 </main>
 
+<style>
+#giftModal .modal-box{max-height:calc(100dvh - 36px);overflow-y:auto}
+@media(max-width:600px){#giftModal .bank-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;padding:20px 14px}#giftModal .bank{min-width:0}#giftModal .qr{width:min(155px,100%);height:auto;aspect-ratio:1}#giftModal .qr img{display:block;aspect-ratio:1}#giftModal .bank small,#giftModal .bank strong{font-size:12px}#giftModal .bank h3{font-size:13px}}
+</style>
 <div class="modal" id="giftModal" aria-hidden="true">
  <div class="modal-box">
   <div class="modal-head">HỘP QUÀ MỪNG</div><button class="modal-close" id="closeGift">×</button>
@@ -905,13 +909,13 @@ body.locked{overflow:hidden;}
    <div class="bank">
     <h3>CHÚ RỂ · ĐINH ĐỨC TRUNG</h3>
     <div class="qr"><img src="assets/qr-groom.png" alt="QR chú rể" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="qrph" style="display:none">THÊM QR<br>qr-groom.png</div></div>
-    <small id="groomBank">[Ngân hàng]</small><small id="groomAccount">[Số tài khoản]</small><strong id="groomHolder">DINH DUC TRUNG</strong>
+    <small id="groomBank">MB Bank</small><small id="groomAccount">8880126111998</small><strong id="groomHolder">DINH DUC TRUNG</strong>
     <a class="saveqr" href="assets/qr-groom.png" download>Lưu QR</a>
    </div>
    <div class="bank">
     <h3>CÔ DÂU · LƯU THỊ THU HƯƠNG</h3>
     <div class="qr"><img src="assets/qr-bride.png" alt="QR cô dâu" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="qrph" style="display:none">THÊM QR<br>qr-bride.png</div></div>
-    <small id="brideBank">[Ngân hàng]</small><small id="brideAccount">[Số tài khoản]</small><strong id="brideHolder">LUU THI THU HUONG</strong>
+    <small id="brideBank">Techcombank</small><small id="brideAccount">19036830203015</small><strong id="brideHolder">LUU THI THU HUONG</strong>
     <a class="saveqr" href="assets/qr-bride.png" download>Lưu QR</a>
    </div>
   </div>
@@ -961,8 +965,8 @@ const CONFIG = {
  venueName: "GIA ĐÌNH NHÀ TRAI · LỄ CƯỚI",
  venueAddress: "TDP Vạn Đồn - Phường Mỹ Lộc, Ninh Bình",
  mapQuery: "20.4416469,106.1232533",
- groomBank: {bank:"[Ngân hàng]", account:"[Số tài khoản]", holder:"DINH DUC TRUNG"},
- brideBank: {bank:"[Ngân hàng]", account:"[Số tài khoản]", holder:"LUU THI THU HUONG"},
+ groomBank: {bank:"MB Bank", account:"8880126111998", holder:"DINH DUC TRUNG"},
+ brideBank: {bank:"Techcombank", account:"19036830203015", holder:"LUU THI THU HUONG"},
  timeline: [
    {time:"1", icon:"glasses", title:"Đón khách"},
    {time:"2", icon:"cutlery", title:"Khai tiệc"},
