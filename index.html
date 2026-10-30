@@ -765,9 +765,9 @@ body.locked{overflow:hidden;}
  <section class="section arch">
   <div class="red-card invitation reveal">
    <h2 class="invitation-heading">TRÂN TRỌNG KÍNH MỜI THAM DỰ<br>LỄ THÀNH HÔN CỦA CÁC CON CHÚNG TÔI</h2>
-   <div class="parents">
-    <div><small>Nhà trai</small><strong id="groomParents"><span>Ông: Đinh Văn Toàn</span><span>Bà: Đặng Thị Cầu</span></strong><span id="groomAddress">Mỹ Lộc, Ninh Bình</span></div>
-    <div><small>Nhà gái</small><strong id="brideParents"><span>Ông: Lưu Văn Khoa</span><span>Bà: Bùi Thị Nhuận</span></strong><span id="brideAddress">Nam Minh, Ninh Bình</span></div>
+   <div class="parents family-details">
+    <div><small>Nhà trai</small><strong id="groomParents"><span>Ông: Đinh Văn Toàn</span><span>Bà: Đặng Thị Cầu</span></strong><b class="family-child">CHÚ RỂ: ĐINH ĐỨC TRUNG</b><span class="family-address" id="groomAddress"><span>TDP Vạn Đồn - Phường Mỹ Lộc</span><span>Tỉnh Ninh Bình</span></span><span class="family-ornament" aria-hidden="true">◇</span></div>
+    <div><small>Nhà gái</small><strong id="brideParents"><span>Ông: Lưu Văn Khoa</span><span>Bà: Bùi Thị Nhuận</span></strong><b class="family-child">CÔ DÂU: LƯU THỊ THU HƯƠNG</b><span class="family-address" id="brideAddress"><span>Thôn Hồng Thái - Xã Nam Minh</span><span>Tỉnh Ninh Bình</span></span><span class="family-ornament" aria-hidden="true">◇</span></div>
    </div>
    <div class="person">Đinh Đức Trung</div><div class="role">Chú rể</div>
    <div class="bigamp">&</div>
@@ -925,8 +925,6 @@ const CONFIG = {
  groomMother: "Đặng Thị Cầu",
  brideFather: "Lưu Văn Khoa",
  brideMother: "Bùi Thị Nhuận",
- groomAddress: "Mỹ Lộc, Ninh Bình",
- brideAddress: "Nam Minh, Ninh Bình",
  ceremonyPlace: "Mỹ Lộc, Ninh Bình",
  venueName: "[TÊN ĐỊA ĐIỂM TỔ CHỨC]",
  venueAddress: "C4VF+377, QL21A, Mỹ Lộc, Ninh Bình, Việt Nam",
@@ -981,7 +979,6 @@ const CONFIG = {
 
  // Config binding
  $("#groomParents").innerHTML=`<span>Ông: ${CONFIG.groomFather}</span><span>Bà: ${CONFIG.groomMother}</span>`; $("#brideParents").innerHTML=`<span>Ông: ${CONFIG.brideFather}</span><span>Bà: ${CONFIG.brideMother}</span>`;
- $("#groomAddress").textContent=CONFIG.groomAddress; $("#brideAddress").textContent=CONFIG.brideAddress;
  $("#partyTime").textContent=(CONFIG.eventTime||"[GIỜ TỔ CHỨC]")+"   CHỦ NHẬT";
  $("#guestTime").textContent=CONFIG.guestTime||"[--:--]"; $("#dinnerTime").textContent=CONFIG.dinnerTime||"[--:--]";
  $("#venueName").textContent=CONFIG.venueName; $("#venueAddress").textContent=CONFIG.venueAddress;
@@ -1326,6 +1323,15 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
   .parents strong>span{white-space:nowrap!important;letter-spacing:-.035em}
   .invitation .person{font-size:clamp(26px,7vw,47px)!important;white-space:nowrap!important;letter-spacing:-.025em;line-height:1.15!important}
 }
+.parents.family-details{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:600;line-height:1.55;gap:20px}
+.parents.family-details>div+div{border-left:0}
+.family-details small{display:block;font:inherit;opacity:1;margin-bottom:4px}
+.parents.family-details strong{font:inherit!important;margin:0!important;gap:0!important;line-height:inherit!important;text-transform:uppercase}
+.parents.family-details strong>span{letter-spacing:0!important}
+.family-child,.family-address,.family-address>span{display:block;font:inherit;white-space:nowrap}
+.family-details .family-ornament{display:flex;align-items:center;justify-content:center;gap:3px;font-size:12px;line-height:1;margin:8px auto 0;width:84px;color:#e9d3bd}
+.family-ornament::before,.family-ornament::after{content:"";height:1px;flex:1;background:currentColor}
+@media(max-width:600px){.parents.family-details{font-size:clamp(10px,2.85vw,16px);gap:8px!important}}
 </style>
 <script id="memory-video-script">
 (()=>{
