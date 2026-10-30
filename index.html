@@ -108,6 +108,11 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}.serif{fon
 
 /* MAP + DRESS */
 .venue{text-align:center}.venue h2,.dress h2{font:600 20px "Cormorant Garamond";color:var(--ink);margin:0 0 8px}.venue p{font:400 13px/1.7 "Cormorant Garamond";color:#7a4a4c;margin:0 auto 20px;max-width:520px}.map{width:min(510px,100%);height:320px;border:0;border-radius:12px;background:#eee;box-shadow:0 6px 18px #5b241a18}.direction{display:block;margin:15px auto 0;color:var(--ink);font:600 14px "Cormorant Garamond";text-decoration:none}
+.venue-location+.venue-location{margin-top:64px}
+.venue-location h2{font-size:clamp(24px,5vw,30px);margin-bottom:12px}
+.venue-location p{font-size:17px;line-height:1.65}
+.venue .venue-direction{display:flex;align-items:center;justify-content:center;width:min(100%,510px);min-height:58px;padding:17px 12px;margin:18px auto 0;border-radius:12px;background:var(--wine);color:var(--cream);font:600 clamp(13px,3.3vw,16px)/1.5 "Be Vietnam Pro",sans-serif;box-shadow:0 6px 18px #65151d30}
+.venue-direction:hover{background:var(--wine2)}.venue-direction:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
 .dress{text-align:center;padding-top:72px}.dress p{font:400 14px "Cormorant Garamond";color:#815b56}.swatches{display:flex;justify-content:center;gap:18px;margin-top:18px}.swatch{width:43px;height:43px;border-radius:50%;box-shadow:0 2px 5px #0002}.swatch:nth-child(1){background:#5a0d15}.swatch:nth-child(2){background:#963c43}.swatch:nth-child(3){background:#d6a83d}.swatch:nth-child(4){background:#eee3d4;border:1px solid #d8c9b9}
 
 /* TIMELINE */
@@ -853,10 +858,18 @@ body.locked{overflow:hidden;}
  </section>
 
  <section class="section arch venue">
-  <h2>TIỆC CƯỚI SẼ TỔ CHỨC TẠI</h2>
-  <p><b id="venueName">[TÊN ĐỊA ĐIỂM TỔ CHỨC]</b><br><span id="venueAddress">Nam Định, Việt Nam</span></p>
-  <iframe class="map" id="mapFrame" title="Bản đồ địa điểm cưới" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-  <a class="direction" id="directionLink" target="_blank" rel="noopener">➤ &nbsp; Chỉ đường</a>
+  <div class="venue-location">
+   <h2>ĐỊA ĐIỂM NHÀ TRAI</h2>
+   <p><b id="venueName">GIA ĐÌNH NHÀ TRAI · LỄ CƯỚI</b><br><span id="venueAddress">TDP Vạn Đồn - Phường Mỹ Lộc, Ninh Bình</span></p>
+   <iframe class="map" id="mapFrame" title="Bản đồ nhà trai — địa điểm lễ cưới" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+   <a class="direction venue-direction" id="directionLink" target="_blank" rel="noopener">➤ &nbsp; CHỈ ĐƯỜNG ĐẾN NHÀ TRAI</a>
+  </div>
+  <div class="venue-location">
+   <h2>ĐỊA ĐIỂM NHÀ GÁI</h2>
+   <p><b>GIA ĐÌNH NHÀ GÁI · LỄ ĂN HỎI</b><br>Thôn Hồng Thái - Xã Nam Minh, Ninh Bình</p>
+   <iframe class="map" id="brideMapFrame" title="Bản đồ nhà gái — địa điểm lễ ăn hỏi" data-map-src="https://www.google.com/maps?q=20.307838,106.218756&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+   <a class="direction venue-direction" id="brideDirectionLink" href="https://maps.app.goo.gl/3y6Vt25U1ej9DnBR8" target="_blank" rel="noopener">➤ &nbsp; CHỈ ĐƯỜNG ĐẾN NHÀ GÁI</a>
+  </div>
   <div class="dress">
    <h2>DRESS CODE</h2><p>Trang phục dự tiệc</p>
    <div class="swatches"><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span></div>
@@ -945,8 +958,8 @@ const CONFIG = {
  brideFather: "Lưu Văn Khoa",
  brideMother: "Bùi Thị Nhuận",
  ceremonyPlace: "Mỹ Lộc, Ninh Bình",
- venueName: "[TÊN ĐỊA ĐIỂM TỔ CHỨC]",
- venueAddress: "C4VF+377, QL21A, Mỹ Lộc, Ninh Bình, Việt Nam",
+ venueName: "GIA ĐÌNH NHÀ TRAI · LỄ CƯỚI",
+ venueAddress: "TDP Vạn Đồn - Phường Mỹ Lộc, Ninh Bình",
  mapQuery: "20.4416469,106.1232533",
  groomBank: {bank:"[Ngân hàng]", account:"[Số tài khoản]", holder:"DINH DUC TRUNG"},
  brideBank: {bank:"[Ngân hàng]", account:"[Số tài khoản]", holder:"LUU THI THU HUONG"},
@@ -1007,13 +1020,15 @@ const CONFIG = {
  const mapFrame=$("#mapFrame");
  const mapSrc="https://www.google.com/maps?q="+q+"&output=embed";
  $("#directionLink").href="https://www.google.com/maps/search/?api=1&query="+q;
- const loadMap=()=>{ if(mapFrame && !mapFrame.src){ mapFrame.src=mapSrc; } };
- if(mapFrame && "IntersectionObserver" in window){
+ mapFrame.dataset.mapSrc=mapSrc;
+ const mapFrames=$$(".venue .map");
+ const loadMap=frame=>{if(!frame.getAttribute('src'))frame.src=frame.dataset.mapSrc;};
+ if("IntersectionObserver" in window){
    const mapObserver=new IntersectionObserver(entries=>{
-     if(entries.some(e=>e.isIntersecting)){ loadMap(); mapObserver.disconnect(); }
+     entries.forEach(entry=>{if(entry.isIntersecting){loadMap(entry.target);mapObserver.unobserve(entry.target);}});
    },{rootMargin:"500px 0px"});
-   mapObserver.observe(mapFrame);
- }else{ loadMap(); }
+   mapFrames.forEach(frame=>mapObserver.observe(frame));
+ }else{ mapFrames.forEach(loadMap); }
 
  // Calendar Nov 2026
  const cal=$("#calendar"), dows=["T2","T3","T4","T5","T6","T7","CN"];
