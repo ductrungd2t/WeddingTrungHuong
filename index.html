@@ -900,6 +900,12 @@ body.locked{overflow:hidden;}
 
 <style>
 #giftModal .modal-box{max-height:calc(100dvh - 36px);overflow-y:auto}
+#giftModal .bank-grid{grid-template-rows:repeat(6,auto);row-gap:0}
+#giftModal .bank{display:grid;grid-template-rows:subgrid;grid-row:span 6;min-width:0}
+#giftModal .bank h3{margin:0;min-height:2.8em;line-height:1.4;display:flex;align-items:center;justify-content:center}
+#giftModal .bank small{align-self:start}
+#giftModal .bank strong{line-height:1.4;align-self:start}
+#giftModal .saveqr{justify-self:center;align-self:start}
 @media(max-width:600px){#giftModal .bank-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;padding:20px 14px}#giftModal .bank{min-width:0}#giftModal .qr{width:min(155px,100%);height:auto;aspect-ratio:1}#giftModal .qr img{display:block;aspect-ratio:1}#giftModal .bank small,#giftModal .bank strong{font-size:12px}#giftModal .bank h3{font-size:13px}}
 </style>
 <div class="modal" id="giftModal" aria-hidden="true">
