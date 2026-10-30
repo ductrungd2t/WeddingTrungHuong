@@ -397,6 +397,14 @@ body, button, input, select, textarea{
 .parents strong{display:flex;flex-direction:column;gap:2px}
 .parents strong>span{display:block}
 .ceremony-place>strong{display:inline-block;margin:7px 0 3px;font-size:1.08em;letter-spacing:.08em}
+.invitation h2.invitation-heading{font-size:clamp(15px,3.4vw,23px);line-height:1.6}
+.ceremony-time{display:inline-block;margin-top:8px}
+.ceremony-date-line.ceremony-date-invitation{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:0;max-width:430px;margin:20px auto 0;font-size:clamp(13px,3.4vw,19px)}
+.ceremony-date-side{border-block:1px solid #ead4bd90;padding:12px 2px;position:relative}
+.ceremony-date-side::before,.ceremony-date-side::after{content:'◆';position:absolute;left:50%;transform:translateX(-50%);font-size:7px;line-height:1;background:#5a0d15;padding:0 5px}
+.ceremony-date-side::before{top:-4px}.ceremony-date-side::after{bottom:-4px}
+.ceremony-date-center{border-inline:1px solid #ead4bd90;display:flex;flex-direction:column;gap:5px;padding:0 6px}
+.ceremony-date-invitation .ceremony-date-center .hero-num{font-size:clamp(42px,10vw,58px);font-style:italic}
 .tl-title{display:flex;align-items:center;gap:10px}
 .tl-icon{width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 23px;color:#f7eadb}
 .tl-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
@@ -751,22 +759,21 @@ body.locked{overflow:hidden;}
 
  <section class="names arch reveal">
   <h1><span>Đinh Đức Trung</span><span class="amp">&</span><span>Lưu Thị Thu Hương</span></h1>
-  <div class="date">29 · 11 · 2026 — NAM ĐỊNH</div>
+  <div class="date">29 · 11 · 2026 — NINH BÌNH</div>
  </section>
 
  <section class="section arch">
   <div class="red-card invitation reveal">
-   <h2>THÔNG TIN LỄ CƯỚI</h2>
+   <h2 class="invitation-heading">TRÂN TRỌNG KÍNH MỜI THAM DỰ<br>LỄ THÀNH HÔN CỦA CÁC CON CHÚNG TÔI</h2>
    <div class="parents">
     <div><small>Nhà trai</small><strong id="groomParents"><span>Ông: Đinh Văn Toàn</span><span>Bà: Đặng Thị Cầu</span></strong><span id="groomAddress">Mỹ Lộc, Ninh Bình</span></div>
     <div><small>Nhà gái</small><strong id="brideParents"><span>Ông: Lưu Văn Khoa</span><span>Bà: Bùi Thị Nhuận</span></strong><span id="brideAddress">Nam Minh, Ninh Bình</span></div>
    </div>
-   <div class="notice">TRÂN TRỌNG BÁO TIN<br>LỄ THÀNH HÔN CỦA CÁC CON CHÚNG TÔI</div>
    <div class="person">Đinh Đức Trung</div><div class="role">Chú rể</div>
    <div class="bigamp">&</div>
    <div class="person">Lưu Thị Thu Hương</div><div class="role">Cô dâu</div>
-   <div class="notice ceremony-place" style="margin-top:30px">LỄ THÀNH HÔN ĐƯỢC CỬ HÀNH TẠI<br><strong>TƯ GIA NHÀ TRAI</strong><br><b id="ceremonyPlace">Mỹ Lộc, Ninh Bình</b></div>
-   <div class="ceremony-date-line"><span>CHỦ NHẬT</span><b class="num hero-num">29</b><span>THÁNG <span class="num">11</span> · <span class="num">2026</span></span></div>
+   <div class="notice ceremony-place" style="margin-top:30px">HÔN LỄ ĐƯỢC TỔ CHỨC TẠI GIA ĐÌNH NHÀ TRAI<br><span class="ceremony-time">VÀO HỒI 13 GIỜ 30’</span></div>
+   <div class="ceremony-date-line ceremony-date-invitation"><span class="ceremony-date-side">CHỦ NHẬT</span><div class="ceremony-date-center"><b class="num hero-num">29</b><span>THÁNG 11</span></div><span class="ceremony-date-side">NĂM 2026</span></div>
    <img class="card-flower" src="assets/flower2-decoration.webp" alt="" loading="lazy" decoding="async">
   </div>
  </section>
@@ -975,7 +982,6 @@ const CONFIG = {
  // Config binding
  $("#groomParents").innerHTML=`<span>Ông: ${CONFIG.groomFather}</span><span>Bà: ${CONFIG.groomMother}</span>`; $("#brideParents").innerHTML=`<span>Ông: ${CONFIG.brideFather}</span><span>Bà: ${CONFIG.brideMother}</span>`;
  $("#groomAddress").textContent=CONFIG.groomAddress; $("#brideAddress").textContent=CONFIG.brideAddress;
- $("#ceremonyPlace").textContent=CONFIG.ceremonyPlace;
  $("#partyTime").textContent=(CONFIG.eventTime||"[GIỜ TỔ CHỨC]")+"   CHỦ NHẬT";
  $("#guestTime").textContent=CONFIG.guestTime||"[--:--]"; $("#dinnerTime").textContent=CONFIG.dinnerTime||"[--:--]";
  $("#venueName").textContent=CONFIG.venueName; $("#venueAddress").textContent=CONFIG.venueAddress;
