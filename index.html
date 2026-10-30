@@ -94,6 +94,16 @@ body.locked{overflow:hidden}button,input,select,textarea{font:inherit}.serif{fon
 /* PARTY */
 .party-card{padding:42px 45px 48px;text-align:center}.party-lead{font:500 28px "Cormorant Garamond";margin:0 0 18px}.date-row{display:flex;align-items:center;justify-content:center;gap:18px;margin:16px 0}.date-row .day{font:500 65px/1 "Cormorant Garamond";padding-right:18px;border-right:1px solid #ead4bd80}.date-row .month{font:500 16px/1.7 "Cormorant Garamond";text-align:left}.time-row{display:flex;justify-content:center;gap:40px;margin:25px 0 28px}.time-row small{display:block;opacity:.7;margin-bottom:5px}.time-row b{font:500 19px "Cormorant Garamond"}
 .calendar{width:min(470px,94%);margin:30px auto;background:#f7ecdc;color:#5b2024;border:1px solid rgba(101,21,29,.18);border-radius:14px;padding:28px 26px 30px;box-shadow:0 12px 30px rgba(50,8,12,.12),inset 0 0 0 1px rgba(255,255,255,.55)}.cal-title{font:italic 30px "Cormorant Garamond";margin-bottom:18px;color:#6b2026}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px 7px;font-family:"Be Vietnam Pro",sans-serif;font-size:14px;font-weight:400;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}.cal-grid span{height:39px;display:grid;place-items:center}.cal-grid span:not(.dow){line-height:1;letter-spacing:0;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}.cal-grid .dow{font-family:"Be Vietnam Pro",sans-serif;font-size:12px;font-weight:500;border-bottom:1px solid #9b6667;height:30px;letter-spacing:.03em}.cal-grid .wday,.cal-grid .engagement{position:relative;z-index:1;font-family:"Be Vietnam Pro",sans-serif;font-weight:600;font-variant-numeric:lining-nums tabular-nums;margin-bottom:18px}.cal-grid .wday{color:#fff}.cal-grid .engagement{color:#70141e}.cal-grid .wday:before,.cal-grid .engagement:before{content:"";position:absolute;left:50%;top:50%;width:45px;height:42px;transform:translate(-50%,-52%);z-index:-1;background-position:center;background-repeat:no-repeat;background-size:contain}.cal-grid .engagement:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 58'%3E%3Cpath d='M32 51C22 43 7 33 7 19C7 10 13 5 20 5C26 5 30 9 32 14C34 9 38 5 44 5C52 5 58 11 57 20C56 33 43 43 32 51Z' fill='none' stroke='%238a2630' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10 22C13 34 24 43 32 49' fill='none' stroke='%238a2630' stroke-width='1.25' stroke-linecap='round' opacity='.62'/%3E%3C/svg%3E")}.cal-grid .wday:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 58'%3E%3Cpath d='M32 52C22 44 6 33 7 18C8 9 14 5 21 6C27 7 30 11 32 15C35 9 40 5 46 6C54 7 58 14 56 23C53 35 42 44 32 52Z' fill='%2370141e' stroke='%2370141e' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 18C13 30 23 42 32 49' fill='none' stroke='%23b96a72' stroke-width='1.15' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E");filter:drop-shadow(0 4px 5px rgba(82,8,15,.18))}.cal-grid .wday:after,.cal-grid .engagement:after{position:absolute;color:#70141e;font-size:10px;white-space:nowrap;top:38px;left:50%;transform:translateX(-50%);z-index:2;font-weight:700}.cal-grid .wday:after{content:"Lễ cưới"}.cal-grid .engagement:after{content:"Ăn hỏi"}
+.wedding-events{display:grid;gap:30px;margin-bottom:28px}
+.wedding-event{padding:0 0 28px;border-bottom:1px solid #ead4bd50}
+.wedding-event:last-child{border-bottom:0;padding-bottom:0}
+.wedding-event h3{font:600 clamp(25px,6vw,34px) "Cormorant Garamond",serif;margin:0 0 14px;color:#f7dfb7}
+.wedding-event p{margin:8px 0;line-height:1.65}
+.event-location{font-size:clamp(12px,3vw,15px);font-weight:600}
+.event-address{font:500 17px/1.6 "Cormorant Garamond",serif;opacity:.85}
+.event-time{font:500 19px/1.6 "Cormorant Garamond",serif}
+.wedding-event .date-row{margin-bottom:0}
+@media(max-width:600px){.party-card{padding:36px 18px}.party-card .calendar{width:100%;padding:24px 12px}.event-time{font-size:18px}}
 .link-light{color:#f9ecdc;font:500 12px "Cormorant Garamond";text-decoration:underline}.rsvp-jump{margin-top:25px;background:#f6eadb;color:#68151e;border:0;border-radius:24px;padding:12px 24px;cursor:pointer}
 
 /* MAP + DRESS */
@@ -766,8 +776,8 @@ body.locked{overflow:hidden;}
   <div class="red-card invitation reveal">
    <h2 class="invitation-heading">TRÂN TRỌNG KÍNH MỜI THAM DỰ<br>LỄ THÀNH HÔN CỦA CÁC CON CHÚNG TÔI</h2>
    <div class="parents family-details">
-    <div><small>Nhà trai</small><strong id="groomParents"><span>Ông: Đinh Văn Toàn</span><span>Bà: Đặng Thị Cầu</span></strong><b class="family-child">CHÚ RỂ: ĐINH ĐỨC TRUNG</b><span class="family-address" id="groomAddress"><span>TDP Vạn Đồn - Phường Mỹ Lộc</span><span>Tỉnh Ninh Bình</span></span><span class="family-ornament" aria-hidden="true">◇</span></div>
-    <div><small>Nhà gái</small><strong id="brideParents"><span>Ông: Lưu Văn Khoa</span><span>Bà: Bùi Thị Nhuận</span></strong><b class="family-child">CÔ DÂU: LƯU THỊ THU HƯƠNG</b><span class="family-address" id="brideAddress"><span>Thôn Hồng Thái - Xã Nam Minh</span><span>Tỉnh Ninh Bình</span></span><span class="family-ornament" aria-hidden="true">◇</span></div>
+    <div><small>Nhà trai</small><strong id="groomParents"><span>Ông: Đinh Văn Toàn</span><span>Bà: Đặng Thị Cầu</span></strong><span class="family-address" id="groomAddress"><span>TDP Vạn Đồn - Phường Mỹ Lộc</span><span>Tỉnh Ninh Bình</span></span><span class="family-ornament" aria-hidden="true">◇</span></div>
+    <div><small>Nhà gái</small><strong id="brideParents"><span>Ông: Lưu Văn Khoa</span><span>Bà: Bùi Thị Nhuận</span></strong><span class="family-address" id="brideAddress"><span>Thôn Hồng Thái - Xã Nam Minh</span><span>Tỉnh Ninh Bình</span></span><span class="family-ornament" aria-hidden="true">◇</span></div>
    </div>
    <div class="person">Đinh Đức Trung</div><div class="role">Chú rể</div>
    <div class="bigamp">&</div>
@@ -804,12 +814,21 @@ body.locked{overflow:hidden;}
  <section class="section arch">
   <div class="red-card party-card reveal">
    <h2>THÔNG TIN TIỆC CƯỚI</h2>
-   <div class="party-lead">TIỆC CƯỚI SẼ DIỄN RA VÀO LÚC:</div>
-   <div id="partyTime" style="font:500 16px Cormorant Garamond">[GIỜ TỔ CHỨC] &nbsp;&nbsp; CHỦ NHẬT</div>
-   <div class="date-row"><div class="day">29</div><div class="month"><b>THÁNG 11</b><br>2026</div></div>
-   <div class="time-row">
-    <div><small>ĐÓN KHÁCH</small><b id="guestTime">[--:--]</b></div>
-    <div><small>KHAI TIỆC</small><b id="dinnerTime">[--:--]</b></div>
+   <div class="wedding-events">
+    <article class="wedding-event">
+     <h3>LỄ ĂN HỎI</h3>
+     <p class="event-location">TẠI GIA ĐÌNH NHÀ GÁI</p>
+     <p class="event-address">Thôn Hồng Thái - Xã Nam Minh<br>Tỉnh Ninh Bình</p>
+     <p class="event-time">Vào lúc <b>7 giờ sáng</b> · Thứ Sáu</p>
+     <div class="date-row"><div class="day">27</div><div class="month"><b>THÁNG 11</b><br>NĂM 2026</div></div>
+    </article>
+    <article class="wedding-event">
+     <h3>LỄ CƯỚI</h3>
+     <p class="event-location">TẠI GIA ĐÌNH NHÀ TRAI</p>
+     <p class="event-address">TDP Vạn Đồn - Phường Mỹ Lộc<br>Tỉnh Ninh Bình</p>
+     <p class="event-time">Vào lúc <b>13 giờ 30 chiều</b> · Chủ Nhật</p>
+     <div class="date-row"><div class="day">29</div><div class="month"><b>THÁNG 11</b><br>NĂM 2026</div></div>
+    </article>
    </div>
    <div class="calendar">
     <div class="cal-title">Tháng 11 / 2026</div>
@@ -979,8 +998,6 @@ const CONFIG = {
 
  // Config binding
  $("#groomParents").innerHTML=`<span>Ông: ${CONFIG.groomFather}</span><span>Bà: ${CONFIG.groomMother}</span>`; $("#brideParents").innerHTML=`<span>Ông: ${CONFIG.brideFather}</span><span>Bà: ${CONFIG.brideMother}</span>`;
- $("#partyTime").textContent=(CONFIG.eventTime||"[GIỜ TỔ CHỨC]")+"   CHỦ NHẬT";
- $("#guestTime").textContent=CONFIG.guestTime||"[--:--]"; $("#dinnerTime").textContent=CONFIG.dinnerTime||"[--:--]";
  $("#venueName").textContent=CONFIG.venueName; $("#venueAddress").textContent=CONFIG.venueAddress;
  $("#groomBank").textContent=CONFIG.groomBank.bank; $("#groomAccount").textContent=CONFIG.groomBank.account; $("#groomHolder").textContent=CONFIG.groomBank.holder;
  $("#brideBank").textContent=CONFIG.brideBank.bank; $("#brideAccount").textContent=CONFIG.brideBank.account; $("#brideHolder").textContent=CONFIG.brideBank.holder;
@@ -1328,7 +1345,7 @@ body.opened #romanticAmbient,body.invitation-open #romanticAmbient,body.open #ro
 .family-details small{display:block;font:inherit;opacity:1;margin-bottom:4px}
 .parents.family-details strong{font:inherit!important;margin:0!important;gap:0!important;line-height:inherit!important;text-transform:uppercase}
 .parents.family-details strong>span{letter-spacing:0!important}
-.family-child,.family-address,.family-address>span{display:block;font:inherit;white-space:nowrap}
+.family-address,.family-address>span{display:block;font:inherit;white-space:nowrap}
 .family-details .family-ornament{display:flex;align-items:center;justify-content:center;gap:3px;font-size:12px;line-height:1;margin:8px auto 0;width:84px;color:#e9d3bd}
 .family-ornament::before,.family-ornament::after{content:"";height:1px;flex:1;background:currentColor}
 @media(max-width:600px){.parents.family-details{font-size:clamp(10px,2.85vw,16px);gap:8px!important}}
